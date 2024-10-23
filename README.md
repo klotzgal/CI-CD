@@ -16,7 +16,7 @@
 ### Part 2-4. Сборка, Тест кодстайла, Интеграционные тесты
   Написал .gitlab-ci.yml файл и протестировал работу пайплайна.
   й. Протестировал что пайплайн фейлится где при ошибках.
-!["Фейл"](../misc/images/screens/fail.png)
+!["Фейл"](misc/images/screens/fail.png)
   
 
 
@@ -27,9 +27,9 @@
 #### Написать этап для **CD**, который "разворачивает" проект на другой виртуальной машине:
 1. Добавил на каждой машине адаптер для внутренней сети
 2. Настроил конфишурацию netplan так, чтобы машины находились в одной сети
-!["Netplan"](../misc/images/screens/5.1.png)
+!["Netplan"](misc/images/screens/5.1.png)
 3. Проверил ping
-!["Ping"](../misc/images/screens/5.2.png)
+!["Ping"](misc/images/screens/5.2.png)
 
 
 ##### Запускать этот этап вручную при условии, что все предыдущие этапы прошли успешно
@@ -49,16 +49,16 @@
 6. Далее написал deploy.sh, состоящий из одной строчки:
   - scp SimpleBashUtils/cat/s21_cat SimpleBashUtils/grep/s21_grep root@196.168.0.2:/usr/local/bin/
 7. scp(Secure Copy Protocol) как понятно из названия служит для копирования файлов между компьютерами. В данном случае он копирует артефакты созданные на этапе build на сервер 196.168.0.2 в папку /usr/local/bin, подключаясь от root. При этом права на папку /usr/local/bin/ на втором сервере остаются только у root:
-  !["Permissions"](../misc/images/screens/5.4.png)
+  !["Permissions"](misc/images/screens/5.4.png)
 
 ##### В файле _gitlab-ci.yml_ добавить этап запуска написанного скрипта
-  - !["Deploy.yml"](../misc/images/screens/5.5.png)
+  - !["Deploy.yml"](misc/images/screens/5.5.png)
 
 
 ##### В случае ошибки "зафейлить" пайплайн
 
 В результате вы должны получить готовые к работе приложения из проекта *C2_SimpleBashUtils* (s21_cat и s21_grep) на второй виртуальной машине.
-  !["s21_*"](../misc/images/screens/5.6.png)
+  !["s21_*"](misc/images/screens/5.6.png)
 
 ### Part 6. Дополнительно. Уведомления
 
@@ -68,11 +68,11 @@
 - В остальном текст уведомления может быть произвольным.
 
 1. Создал телеграм бота
-  - !["BotFather"](../misc/images/screens/6.1.png)
+  - !["BotFather"](misc/images/screens/6.1.png)
 2. Написал bash скрипт для отправки уведомлений
-  - !["Script"](../misc/images/screens/6.2.png)
+  - !["Script"](misc/images/screens/6.2.png)
 3. Добавил после каждого этапа запуск скрипта. Аргумент CI_JOB_STATUS созержит в себе статус выполнения текущего задания
-  - !["Yaml"](../misc/images/screens/6.3.png)
+  - !["Yaml"](misc/images/screens/6.3.png)
 4. После запуска пайплайна бот отправляет уведомления
-  - ![""](../misc/images/screens/6.4.png)
+  - ![""](misc/images/screens/6.4.png)
 
