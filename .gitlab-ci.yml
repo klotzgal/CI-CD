@@ -1,0 +1,58 @@
+default:
+  tags: [Node1]
+
+stages:
+  - build
+  - style-test
+  - func-test
+  - deploy
+
+build-job:
+  stage: build
+  script:
+  - cd src/SimpleBashUtils/cat
+  - make s21_cat
+  - cd ../grep
+  - make s21_grep
+  after_script:
+  - cd src
+  - bash notification.sh $CI_JOB_STATUS
+  artifacts:
+    paths:
+    - src/SimpleBashUtils/grep/s21_grep
+    - src/SimpleBashUtils/cat/s21_cat
+    expire_in: 30 day
+    
+style-test-job:
+  stage: style-test
+  when: on_success
+  script:
+    - cp materials/linters/.clang-format src/SimpleBashUtils
+    - clang-format -n -Werror src/SimpleBashUtils/*/*.h
+    - clang-format -n -Werror src/SimpleBashUtils/*/*.c
+  after_script:
+  - cd src
+  - bash notification.sh $CI_JOB_STATUS
+
+func-test-job:
+  stage: func-test
+  when: on_success
+  script:
+  - cd src/SimpleBashUtils/cat
+  - make test
+  - cd ../grep
+  - make test
+  after_script:
+  - cd src
+  - bash notification.sh $CI_JOB_STATUS
+    
+deploy-job:
+  stage: deploy
+  when: manual
+  script:
+  - cd src
+  - bash deploy.sh
+  after_script:
+  - cd src
+  - bash notification.sh $CI_JOB_STATUS
+    

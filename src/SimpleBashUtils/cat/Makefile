@@ -33,10 +33,9 @@ leak: $(OB)
 	leaks --atExit -- ./$(OB) -e int $(OB).c -benst test_file/all_flag_tests/*
 
 check: $(OB)
-	cppcheck --enable=all --suppress=missingIncludeSystem . *.c *.h
-	cp ../../materials/linters/CPPLINT.cfg ./
-	python3 ./../../materials/linters/cpplint.py --extensions=c *.c *.h
-	rm -f CPPLINT.cfg
+	cp ../../../materials/linters/.clang-format ./
+	clang-format -n *.c *.h
+	rm -f .clang-format
 
 valgrind:
 	sh ../../materials/build/run.sh
